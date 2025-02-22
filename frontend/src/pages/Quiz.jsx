@@ -1,5 +1,7 @@
 import React , {useState , useEffect} from 'react'
 
+// import { createContext } from 'react';
+
 import axios from 'axios'
 
 const API = "http://localhost:5054/quiz";
@@ -8,6 +10,8 @@ function Quiz() {
 
   const [data,setData] = useState([]);
   const [isFetched,setIsFetched] = useState(false);
+  const [count , setCount] = useState(0)
+  // const [isSubmitted,setIsSubmitted] = useState(false);
 
   useEffect(() => {
     getData();
@@ -36,7 +40,7 @@ function Quiz() {
 
     const eleA = document.querySelector('#optionA-'+id);
     // eleA.classList.remove('bg-blue-500')
-    console.log(eleA);
+    // console.log(eleA);
     
 
     const eleB = document.querySelector(`#optionB-${id}`);
@@ -51,7 +55,7 @@ function Quiz() {
     // eleD.classList.remove('bg-blue-500')
     // console.log(eleD);
 
-    console.log(res.toUpperCase() + " "+e.target.value[0].toUpperCase());
+    // console.log(res.toUpperCase() + " "+e.target.value[0].toUpperCase());
     
 
     const ans = document.querySelector(`#answer-${id}`);
@@ -65,20 +69,27 @@ function Quiz() {
     if( res.toUpperCase() === e.target.value[0].toUpperCase() && ( !ans.classList.contains('bg-green-700') &&  !ans.classList.contains('bg-rose-700') ) ){
 
       ans.classList.add('bg-green-700')
+      setCount(count+1)
     }
-    else{
+    else if( ( !ans.classList.contains('bg-green-700')  ) ){
       ans.classList.add('bg-rose-700')
     }
     ans.value= "correct answer is:"+res.toUpperCase();
 
     if(a || b || c|| d ){
-      console.log("option is already selected!");
+      // console.log("option is already selected!");
       return;
       
     }
 
     e.target.classList.add(`bg-blue-500`)
 
+    
+  }
+
+  const handleSubmit = ()=>{
+    console.log(count);
+    // setIsSubmitted(true)
     
   }
 
@@ -91,6 +102,8 @@ function Quiz() {
       <div className='w-full  bg-blue-300 flex flex-col gap-2 items-center'>
 
          <h1 className='text-3xl text-blue-700'>Attempt your quiz</h1>
+
+         <h1 className='w-64 text-2xl text-center rounded text-white fixed top-5 right-3 bg-blue-500'>Your Total Score is {count}</h1>
         
             {
               data.map((item , idx) =>{
@@ -107,14 +120,16 @@ function Quiz() {
 
                   <input type="text" value={`D.${item.option[3]}`}  readOnly id={`optionD-${item._id}`} className='optionD outline-none rounded w-2/4 h-10 hover:border-2 border-blue-700 mb-2' onClick={(e)=>{handleClick(e,item.answer,item._id)}}/>
                   
-                  <input type="text" value={"Correct answer will be displayed!"}  readOnly id={`answer-${item._id}`} className='outline-none rounded w-2/4 h-10 mb-2 text-center text-xl'/>
+                  <input type="text" value={"Correct answer will be displayed!"} readOnly id={`answer-${item._id}`} className='outline-none rounded w-2/4 h-10 mb-2 text-center text-xl'/>
 
                 </div>
               })
 
             }
 
-            <button className='w-60 h-12 bg-green-600 rounded text-white font-bold text-xl mb-2'>Submit</button>
+            <button className='w-60 h-12 bg-green-600 rounded text-white font-bold text-xl mb-2' onClick={(e)=>{handleSubmit(e)}}>Submit</button>
+
+            
 
       </div>
     }

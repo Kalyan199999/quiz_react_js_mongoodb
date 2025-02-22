@@ -18,7 +18,7 @@ function Home() {
 
           <button className='text-white text-xl bg-indigo-500 rounded w-56 h-12 hover:bg-indigo-700' onClick={()=>{
             navigate('/add')
-          }}>Add quation</button>
+          }}>Add question</button>
 
           <button className='text-white text-xl bg-indigo-500 rounded w-56 h-12 hover:bg-indigo-700' onClick={()=>{
             navigate('/quiz')
